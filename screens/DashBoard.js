@@ -271,7 +271,7 @@ const Dashboardmemo = (() => {
 
                     <View style={{ flexDirection: 'row', marginTop: 8, }}>
                         <Text style={{ fontSize: 15, marginTop: 10, fontWeight:'bold',color: 'black', }}>Tốc độ chảy:  </Text>
-                        <Text style={{ fontSize: 15, marginTop: 10 }}>{dataUser.velo} giọt/phút</Text>
+                        <Text style={{ fontSize: 15, marginTop: 10 ,color : 'red', }}>{dataUser.velo} giọt/phút</Text>
                             <TouchableOpacity style={styles.buttonCalib} onPress={setCalib}>
                                 <Text style={styles.textCalib}>Hiệu chuẩn</Text>
                             </TouchableOpacity>
