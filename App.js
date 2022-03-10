@@ -7,32 +7,51 @@ import Option from './screens/Option';
 import Welcome from './screens/Welcome';
 import Login from './screens/Login';
 import Loading from './screens/Loading';
-import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from './navigations/AuthContext'
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Information from './screens/Information';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function DashStack (){
+  return(
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Dash'
+        component={DashBoard}
+        options ={{headerShown :false }}
+        />
+      <Stack.Screen
+        name='Infor'
+        component={Information}
+        options = {{headerShown: false}}
+        />
+    </Stack.Navigator>
+  )
+}
+
 const App = () => {
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState('ok')
   return (
     <AuthContext.Provider value={{ user, setUser }}>
     <NavigationContainer>
       {user ?
-    <Tab.Navigator
-    screenOptions={stylesNavigation}
-    tabBarOptions={{
-      activeTintColor: '#0AC4BA',
-      inactiveTintColor: 'gray',
-    }}>
-    <Tab.Screen name="Dash" component={DashBoard} options={{title:'Trang chủ'}}/>
-    <Tab.Screen name="Option" component={Option} options={{title:'Tùy chọn'}}/>
-  </Tab.Navigator> :
+          <Tab.Navigator
+            screenOptions={stylesNavigation}
+            tabBarOptions={{
+              activeTintColor: '#0AC4BA',
+              inactiveTintColor: 'gray',
+            }}>
+            <Tab.Screen name="DashSt" component={DashStack} options={{title:'Trang chủ'}}/>
+            <Tab.Screen name="Option" component={Option} options={{title:'Tùy chọn'}}/>
+
+          </Tab.Navigator> :
+
       <Stack.Navigator >
               <Stack.Screen
                 options={{ headerShown: false }}
@@ -55,6 +74,7 @@ const App = () => {
                 options={{ headerShown: false }}
                 name="loading"
                 component={Loading} />
+              
       </Stack.Navigator>
       }
     </NavigationContainer>
@@ -73,7 +93,7 @@ const styles = StyleSheet.create({
 const stylesNavigation = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
-    if (route.name == "Dash") {
+    if (route.name == "DashSt") {
       iconName = focused
         ? 'shield-home'
         : 'shield-home-outline';

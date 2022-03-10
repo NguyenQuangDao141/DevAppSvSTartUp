@@ -11,6 +11,7 @@ import {
     ImageBackground,
     FlatList,
     TouchableOpacity,
+    ScrollView,
    
 } from 'react-native';
 
@@ -22,7 +23,6 @@ import {
   Surface,
   ThemeProvider,
 } from 'react-native-paper' ;
-import DropDown from "react-native-paper-dropdown";
 
 
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -33,31 +33,24 @@ import { AuthContext } from '../navigations/AuthContext'
 import LinearGradient from 'react-native-linear-gradient'
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import {ModalPicker} from './ListSolut/ModalPicker';
-const { width, height } = Dimensions.get("window")
-
+import { NavigationContainer } from '@react-navigation/native';
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 let index = null
 let dataUser = {}
-const Dashboardmemo = (() => {
+const DashBoard = ({navigation}) => {
     const { user, setUser } = useContext(AuthContext);
-    
     const[Warning,SetWarning] = useState(false)
-
- 
-
-
-
-    
-
-
-
     const [data, setData] = useState([])
     const [flag, setFlag] = useState(false)
     const [show, setShow] = useState(false)
     const [isCalib, setIsCalib] = useState(false)
-
     const rootRef = firebase.database().ref();
     const animalRef = rootRef.child('/').orderByKey();
-    const List = (props) => {
+    
+
+    const List = (props ) => {
+        
         const [showColor, setShowColor] = useState(false)
         useEffect(() => {
             const interval = setTimeout(() => {
@@ -67,28 +60,48 @@ const Dashboardmemo = (() => {
                 }
             }, 400);
         })
-        let timer = "";
-        if (props.data.time.length == undefined) { }
+        let timer ;
+        if (props.data.time == undefined) { }
 
-        else if (props.data.time.length > 5) {
-            timer = props.data.time.substring(0, 2);
-        }
+        // else if (props.data.time.length > 5) {
+        //     timer = props.data.time.substring(0, 2);
+        // }
         else {
             timer = props.data.time
            // console.log(props.data.time)
         }
+     
+     
         return (
-            <>
-                <TouchableOpacity onPress={() => { index = props.data.id; setShow(true); console.log(index) }} style={props.data.velo > 200 ? (showColor) ? styles.warningDrop : styles.warningDropNo : styles.warningDropNo}>
+            
+                <TouchableOpacity 
+                    onPress={() => { 
+ 
+                        //console.log(`data: ${data}` )
+                        //setShow(true); 
+                        //console.log(height)
+                        navigation.navigate('Infor',{
+                            name:props.data.name ,
+                            bedID :props.data.bedId,
+                            IDUser:props.data.IDUser,
+                            velo  :props.data.velo,
+                            calibVelo:props.data.calibVelo,
+                            isCalib: props.data.isCalib, 
+                            time :props.data.time,
+                            volu: props.data.volu,
+                            
+                            })
+                     }}
+                    style={props.data.velo > 200 ? (showColor) ? styles.warningDrop : styles.warningDropNo : styles.warningDropNo}>
                     <View style={props.data.stt?  styles.title : styles.titleWarning}>
                         <View >
-                            <Text style={styles.header}>Tên</Text>
-                            <Text>{props.data.name}({props.data.bedId})</Text>
+                            <Text style={styles.header}>ID</Text>
+                            <Text style={{color:'red'}}>{props.data.IDUser}</Text>
                         </View>
                         <View style={styles.datas}>
                             <View style={styles.data}>
                                 <Text style={styles.header}>Tốc độ</Text>
-                                <Text>{props.data.velo}</Text>
+                                <Text style={{color:'red'}}>{props.data.velo}</Text>
                             </View>
                             <View style={styles.data}>
                                 <Text style={styles.header}>Trạng thái</Text>
@@ -101,7 +114,7 @@ const Dashboardmemo = (() => {
                         </View>
                     </View>
                 </TouchableOpacity>
-            </>
+            
         )
     }
 
@@ -116,12 +129,12 @@ const Dashboardmemo = (() => {
             })
             if (flag) {
                 dataTemp.sort((a, b) => {
-                    return a.time - b.time
+                    return a.IDUser - b.IDUser
                 })
             }
             else {
                 dataTemp.sort((a, b) => {
-                    return -a.time + b.time
+                    return -a.IDUser + b.IDUser
                 })
             }
             setData(dataTemp)
@@ -167,128 +180,136 @@ const Dashboardmemo = (() => {
        
 
     return (
+
         <View style={styles.container}>
-
-            <View style={styles.order}>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => { setFlag(!flag) }} >
-                    <Text style={{ color: 'gray', marginTop: 3 }}>Sắp xếp</Text>
-                    <MCIcons name={'menu-swap'} size={25} color={'gray'} />
-                </TouchableOpacity>
-            </View>
-            <View style={{ backgroundColor: '#f5f5f5', height: 13 }}>
-
-            </View>
-            <View style={{ alignItems: 'center', width: width, marginBottom: 50 }}>
-                <FlatList
-                    data={data}
-                    renderItem={(it,) => {
-                        return (<List data={it.item}></List>)
-
-                    }}
-                    keyExtractor={item => item.id}
-                />
-            </View>
-            <Modal
-                isVisible={show}
-                animationIn="slideInLeft"
-                animationOut="slideOutRight"
-                onRequestClose = {()=>setShow(false)}
-                style={{
-                    height: 800,
-                }}
-            >
-                <View style={styles.modals}>
-                    <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', marginBottom: 10 }}>
-                        <TouchableOpacity onPress={() => setShow(false)} style={{ alignItems: 'flex-end' }}>
-                            <MCIcons name={'close-octagon-outline'} size={30} color={'#0AC4BA'} />
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold',color:'black' }}>Thông tin bệnh nhân</Text>
-                    </View>
-
-                    <View > 
-                        <TextInput
-                            // label='Tên'
-                            mode='outlined'
-                            onChangeText={text => dataUser.name = text}
-                            placeholder={dataUser.name}
-                            maxLength ={5}
-                        />
-                    </View>
-                    <View>
-                         <TextInput
-                            label='Giường Bệnh'
-                            mode='outlined'
-                            onChangeText={text => dataUser.bedId = text}
-                            placeholder={dataUser.bedId}
-                            maxLength = {3}
-                        />
-                    </View>
-                    
-                    <Text style={{fontSize:25, fontWeight: 'bold',color :'black' }}>Thông tin bình truyền dịch</Text>
-
-                    <TextInput
-                        
-                        label={'Thể tích (ml)'}
-                        keyboardType = 'numeric'
-                        mode = 'outlined'
-                        onChangeText={(text) => setVolume(text)}
-                        placeholder = {volume}
-
-
-                    />
-        {/* Option 2 */}
-                    <View style ={{flexDirection : 'row'}} >
-                        <Text style={styles.textInput}>Loại dung dịch : </Text>
-                       <View style={styles.ViewInput}>
-                           <View>
-                              <TouchableOpacity
-                                 onPress={() => changeModeVisible(true)}
-                              >
-                                  <Text style={styles.textSolut}>{chooseData}</Text>
-                              </TouchableOpacity>
-                              <Modal
-                                  transparent = {true}
-                                  animationIn = 'slideInDown'
-                                  animationOut= 'slideInUp'
-                                  isVisible  = {ModeVisible}
-                                  onRequestClose = {() => changeModeVisible(false)}
-                              >
-                                  <ModalPicker
-                                      changeModeVisible ={changeModeVisible}
-                                      setData = {setDT}
-                                  />
-                              </Modal>
-                           </View>
-                       </View>
-                    </View>
-                    
-
-                   
-                       
-                
-    
-                    
-
-                    <View style={{ flexDirection: 'row', marginTop: 8, }}>
-                        <Text style={{ fontSize: 15, marginTop: 10, fontWeight:'bold',color: 'black', }}>Tốc độ chảy:  </Text>
-                        <Text style={{ fontSize: 15, marginTop: 10 ,color : 'red', }}>{dataUser.velo} giọt/phút</Text>
-                            <TouchableOpacity style={styles.buttonCalib} onPress={setCalib}>
-                                <Text style={styles.textCalib}>Hiệu chuẩn</Text>
-                            </TouchableOpacity>
-                    </View>
-                    <View style={{ alignItems: 'center', marginVertical: 20, }}>
-                        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={['#0AC4BA', '#2BDA8E']} style={{ borderRadius: 10 }}>
-                            <TouchableOpacity style={{ width: 250, height: 50, alignItems: 'center', justifyContent: 'center' }} onPress={setDataName}>
-                                <Text style={{ fontSize: 20, color: '#fff', fontWeight: 'bold' }}>Đồng ý</Text>
-                            </TouchableOpacity>
-                        </LinearGradient>
-                    </View>
+          
+                <View style={styles.order}>
+                    <TouchableOpacity 
+                        style={{ flexDirection: 'row' }} 
+                        onPress={() => { setFlag(!flag) }} 
+                            >
+                            <Text style={{ color: 'gray', marginTop: 3 }}>Sắp xếp</Text>
+                            <MCIcons name={'menu-swap'} size={25} color={'gray'} />
+                    </TouchableOpacity>
                 </View>
-            </Modal>
-        </View >
+                
+                <View style={{ backgroundColor: '#f5f5f5', height: 13 }}></View>
+                <View style={{ alignItems: 'center', width: "100%", marginBottom: 50 }}>
+                    <FlatList
+                        data={data}
+                        renderItem={(it,) => {
+                            return (<List data={it.item}></List>)
+
+                        }}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
+             
+          
+          
+                <Modal
+                    isVisible={show}
+                    animationIn="slideInLeft"
+                    animationOut="slideOutRight"
+                    onRequestClose = {()=>setShow(false)}
+                    style={{
+                        height: 800,
+                    }}
+                >
+                    <View style={styles.modals}>
+                        <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', marginBottom: 10 }}>
+                            <TouchableOpacity onPress={() => setShow(false)} style={{ alignItems: 'flex-end' }}>
+                                <MCIcons name={'close-octagon-outline'} size={30} color={'#0AC4BA'} />
+                            </TouchableOpacity>
+                            <Text style={{ fontSize: 25, fontWeight: 'bold',color:'black' }}>Thông tin bệnh nhân</Text>
+                        </View>
+
+                        <View > 
+                            <TextInput
+                                // label='Tên'
+                                mode='outlined'
+                                onChangeText={text => dataUser.name = text}
+                                placeholder={dataUser.name}
+                                maxLength ={5}
+                            />
+                        </View>
+                        <View>
+                            <TextInput
+                                label='Giường Bệnh'
+                                mode='outlined'
+                                onChangeText={text => dataUser.bedId = text}
+                                placeholder={dataUser.bedId}
+                                maxLength = {3}
+                            />
+                        </View>
+                        
+                        <Text style={{fontSize:25, fontWeight: 'bold',color :'black' }}>Thông tin bình truyền dịch</Text>
+
+                        <TextInput
+                            
+                            label={'Thể tích (ml)'}
+                            keyboardType = 'numeric'
+                            mode = 'outlined'
+                            onChangeText={(text) => setVolume(text)}
+                            placeholder = {volume}
+
+
+                        />
+            {/* Option 2 */}
+                        <View style ={{flexDirection : 'row'}} >
+                            <Text style={styles.textInput}>Loại dung dịch : </Text>
+                        <View style={styles.ViewInput}>
+                            <View>
+                                <TouchableOpacity
+                                    onPress={() => changeModeVisible(true)}
+                                >
+                                    <Text style={styles.textSolut}>{chooseData}</Text>
+                                </TouchableOpacity>
+                                <Modal
+                                    transparent = {true}
+                                    animationIn = 'slideInDown'
+                                    animationOut= 'slideInUp'
+                                    isVisible  = {ModeVisible}
+                                    onRequestClose = {() => changeModeVisible(false)}
+                                >
+                                    <ModalPicker
+                                        changeModeVisible ={changeModeVisible}
+                                        setData = {setDT}
+                                    />
+                                </Modal>
+                            </View>
+                        </View>
+                        </View>
+                        
+
+                    
+                        
+                    
+        
+                        
+
+                        <View style={{ flexDirection: 'row', marginTop: 8, }}>
+                            <Text style={{ fontSize: 15, marginTop: 10, fontWeight:'bold',color: 'black', }}>Tốc độ chảy:  </Text>
+                            <Text style={{ fontSize: 15, marginTop: 10 ,color : 'red', }}>{dataUser.velo} giọt/phút</Text>
+                                <TouchableOpacity style={styles.buttonCalib} onPress={setCalib}>
+                                    <Text style={styles.textCalib}>Hiệu chuẩn</Text>
+                                </TouchableOpacity>
+                        </View>
+                        <View style={{ alignItems: 'center', marginVertical: 20, }}>
+                            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={['#0AC4BA', '#2BDA8E']} style={{ borderRadius: 10 }}>
+                                <TouchableOpacity style={{ width: 250, height: 50, alignItems: 'center', justifyContent: 'center' }} onPress={setDataName}>
+                                    <Text style={{ fontSize: 20, color: '#fff', fontWeight: 'bold' }}>Đồng ý</Text>
+                                </TouchableOpacity>
+                            </LinearGradient>
+                        </View>
+                    </View>
+                </Modal>
+         </View >
+       
     )
 }
-)
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -315,26 +336,26 @@ const styles = StyleSheet.create({
     },
     title: {
         width: width * 0.9,
-        borderWidth: 1,
+        borderWidth: 2,
         flexDirection: 'row',
-        height: 70,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingLeft: 10,
+        height: 80,
+        justifyContent: 'space-around',
+      //  alignItems: 'center',
+        paddingLeft: 15,
         borderRadius: 10,
-        backgroundColor:'deepskyblue',
+        backgroundColor: '#0AC4BA',
 
     },
     titleWarning: {
         width: width * 0.9,
-        borderWidth: 1,
+        borderWidth: 2,
         flexDirection: 'row',
-        height: 70,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        height: 80,
+        justifyContent: 'space-around',
+       // alignItems: 'center',
         paddingLeft: 10,
         borderRadius: 10,
-        backgroundColor:'yellow',
+        backgroundColor:'#FDAC5A',
 
 
     },
@@ -343,13 +364,16 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
+        marginTop : 8,
+        marginBottom: 10,
     },
     datas: {
         flexDirection: 'row',
     },
     data: {
         marginHorizontal: 15,
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     warningTime: {
         color: 'red',
@@ -432,4 +456,5 @@ const styles = StyleSheet.create({
     textCalib: { fontSize: 15, color: '#fff', fontWeight: 'bold' },
     textWithoutCalib: { fontSize: 15, color: '#000', fontWeight: 'bold' },
 })
-export default Dashboard = React.memo(Dashboardmemo)
+//export default Dashboard = React.memo(Dashboardmemo)
+export default DashBoard;

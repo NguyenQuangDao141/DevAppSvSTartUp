@@ -10,7 +10,7 @@ import{
 
 } from 'react-native'
 
-const OPTIONS = ['Nước cất', 'NATRI CLORID 0.9%' ,'NATRI BICARBONAT 1,4%','Glucose 5%','SODIUM BICARBONATE 4,2%',];
+const OPTIONS = ['NƯỚC CẤT', 'NATRI CLORID 0.9%' ,'NATRI BICARBONAT 1,4%','Glucose 5%','SODIUM BICARBONATE 4,2%',];
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 
