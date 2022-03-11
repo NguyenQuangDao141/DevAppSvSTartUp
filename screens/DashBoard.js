@@ -79,7 +79,7 @@ const DashBoard = ({navigation}) => {
  
                         //console.log(`data: ${data}` )
                         //setShow(true); 
-                        //console.log(height)
+                        //console.log(`data :${dataUser}`)
                         navigation.navigate('Infor',{
                             name:props.data.name ,
                             bedID :props.data.bedId,
@@ -207,7 +207,7 @@ const DashBoard = ({navigation}) => {
              
           
           
-                <Modal
+                {/* <Modal
                     isVisible={show}
                     animationIn="slideInLeft"
                     animationOut="slideOutRight"
@@ -246,18 +246,15 @@ const DashBoard = ({navigation}) => {
                         <Text style={{fontSize:25, fontWeight: 'bold',color :'black' }}>Thông tin bình truyền dịch</Text>
 
                         <TextInput
-                            
                             label={'Thể tích (ml)'}
                             keyboardType = 'numeric'
                             mode = 'outlined'
                             onChangeText={(text) => setVolume(text)}
                             placeholder = {volume}
-
-
                         />
-            {/* Option 2 */}
+            
                         <View style ={{flexDirection : 'row'}} >
-                            <Text style={styles.textInput}>Loại dung dịch : </Text>
+                            <Text style={styles.textInput}>Loại dung dịch : </Text> 
                         <View style={styles.ViewInput}>
                             <View>
                                 <TouchableOpacity
@@ -280,13 +277,6 @@ const DashBoard = ({navigation}) => {
                             </View>
                         </View>
                         </View>
-                        
-
-                    
-                        
-                    
-        
-                        
 
                         <View style={{ flexDirection: 'row', marginTop: 8, }}>
                             <Text style={{ fontSize: 15, marginTop: 10, fontWeight:'bold',color: 'black', }}>Tốc độ chảy:  </Text>
@@ -303,7 +293,8 @@ const DashBoard = ({navigation}) => {
                             </LinearGradient>
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
+
          </View >
        
     )

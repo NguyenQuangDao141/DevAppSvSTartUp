@@ -76,6 +76,7 @@ const Information = ({navigation, route})=>{
               setChooseData (option)
               };
             
+            
 
 
            
