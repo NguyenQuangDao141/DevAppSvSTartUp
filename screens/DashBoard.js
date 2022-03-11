@@ -79,7 +79,7 @@ const DashBoard = ({navigation}) => {
  
                         //console.log(`data: ${data}` )
                         //setShow(true); 
-                        //console.log(`data :${dataUser}`)
+                        //console.log(`data :${props.data.id}`)
                         navigation.navigate('Infor',{
                             name:props.data.name ,
                             bedID :props.data.bedId,
@@ -89,11 +89,14 @@ const DashBoard = ({navigation}) => {
                             isCalib: props.data.isCalib, 
                             time :props.data.time,
                             volu: props.data.volu,
+                            dataId:props.data.id,
+                            
+                            
                             
                             })
                      }}
                     style={props.data.velo > 200 ? (showColor) ? styles.warningDrop : styles.warningDropNo : styles.warningDropNo}>
-                    <View style={props.data.stt?  styles.title : styles.titleWarning}>
+                    <View style={props.data.stt&&props.data.stt1 ?  styles.title : styles.titleWarning}>
                         <View >
                             <Text style={styles.header}>ID</Text>
                             <Text style={{color:'red'}}>{props.data.IDUser}</Text>
@@ -145,13 +148,13 @@ const DashBoard = ({navigation}) => {
             dataUser = it
         }
     })
-    const setDataName = () => {
-        const modifyData = rootRef.child(`${dataUser.id}`).update({
-            name: dataUser.name,
-            bedId: dataUser.bedId
-        });
-        setShow(false)
-    }
+    // const setDataName = () => {
+    //     const modifyData = rootRef.child(`${dataUser.id}`).update({
+    //         name: dataUser.name,
+    //         bedId: dataUser.bedId
+    //     });
+    //     setShow(false)
+    // }
     // Calib velocity
     const setCalib = () => {
       rootRef.child(`${dataUser.id}`).get().then((snapshot) => {
@@ -207,7 +210,7 @@ const DashBoard = ({navigation}) => {
              
           
           
-                {/* <Modal
+                 {/* <Modal
                     isVisible={show}
                     animationIn="slideInLeft"
                     animationOut="slideOutRight"
@@ -293,7 +296,7 @@ const DashBoard = ({navigation}) => {
                             </LinearGradient>
                         </View>
                     </View>
-                </Modal> */}
+                </Modal>  */}
 
          </View >
        

@@ -38,15 +38,31 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
-let index = null
-let dataUser = {}
+
 
 const Information = ({navigation, route})=>{
 
             const onPressDone =() =>{
+              const dataUpdate = rootRef.child(`${dataId}`).update({
+                 IDUser:IDUserIf,
+                 name: nameIf,
+                 bedId: bedIDIf,
+                 volu: voluIf,
+                 solution:chooseData,
+
+
+              });
               navigation.navigate('Dash')
+              
             }
             const onPressSetting =() => {
+              rootRef.child(`${dataId}`).get().then((snapshot)=>{
+                rootRef.child(`${dataId}`).update({
+                  calibVelo: snapshot.val().velo,
+                  isCalib: true,
+                })
+              });
+             
                 Alert.alert('Thông báo','Đã thiết lập vận tốc chảy',[
                   {text:'OK',}
                 ])
@@ -59,9 +75,11 @@ const Information = ({navigation, route})=>{
             let isCalib = route.params.isCalib;
             let time = route.params.time;
             let volu = route.params.volu ;
+            let dataId = route.params.dataId ;
              
-
-
+            
+            const rootRef = firebase.database().ref();
+            const animalRef = rootRef.child('/').orderByKey();
             const [nameIf,setNameIf]     = useState(name);
             const [bedIDIf,setBedIDIf]   = useState(bedID);
             const [IDUserIf,setIDUserIf] = useState(IDUser);
@@ -76,7 +94,7 @@ const Information = ({navigation, route})=>{
               setChooseData (option)
               };
             
-            
+           
 
 
            
