@@ -41,49 +41,52 @@ const HEIGHT = Dimensions.get('window').height;
 
 
 const Information = ({navigation, route})=>{
-
+  const rootRef = firebase.database().ref(route.params.dataId);
+  const animalRef = rootRef.child('/').orderByKey();
+  const [nameIf,setNameIf]     = useState();
+  const [bedIDIf,setBedIDIf]   = useState();
+  const [IDUserIf,setIDUserIf] = useState();
+  const [voluIf,setVoluIf]     = useState();
+  const [time,setTime]     = useState();
+  const [velo,setVelo]     = useState();
+  const [volu,setVolu]     = useState();
+  const [calibVelo,setCalibVelo]     = useState();
+  const [dataId,setDataId]     = useState();
             const onPressDone =() =>{
-              const dataUpdate = rootRef.child(`${dataId}`).update({
-                 IDUser:IDUserIf,
+              rootRef.update({
                  name: nameIf,
-                 bedId: bedIDIf,
-                 volu: voluIf,
-                 solution:chooseData,
-
-
-              });
-              navigation.navigate('Dash')
+              }).catch((e)=>{
+                console.log(e);
+              })
               
+              navigation.navigate('Dash')
             }
             const onPressSetting =() => {
-              rootRef.child(`${dataId}`).get().then((snapshot)=>{
-                rootRef.child(`${dataId}`).update({
-                  calibVelo: snapshot.val().velo,
-                  isCalib: true,
-                })
-              });
+              // rootRef.child(`${dataId}`).get().then((snapshot)=>{
+              //   rootRef.child(`${dataId}`).update({
+              //     calibVelo: snapshot.val().velo,
+              //     isCalib: true,
+              //   })
+              // });
              
                 Alert.alert('Thông báo','Đã thiết lập vận tốc chảy',[
                   {text:'OK',}
                 ])
             }
-            let name = route.params.name ;
-            let bedID = route.params.bedID;
-            let IDUser = route.params.IDUser;
-            let velo = route.params.velo;
-            let calibVelo = route.params.calibVelo;
-            let isCalib = route.params.isCalib;
-            let time = route.params.time;
-            let volu = route.params.volu ;
-            let dataId = route.params.dataId ;
-             
-            
-            const rootRef = firebase.database().ref();
-            const animalRef = rootRef.child('/').orderByKey();
-            const [nameIf,setNameIf]     = useState(name);
-            const [bedIDIf,setBedIDIf]   = useState(bedID);
-            const [IDUserIf,setIDUserIf] = useState(IDUser);
-            const [voluIf,setVoluIf]     = useState(volu)
+            useEffect(()=>{
+              rootRef.get().then((snapshot)=>{
+                setNameIf(snapshot.val().name)
+                
+              }).catch((e)=>{
+                console.log(e);
+              })
+              animalRef.on('value', (child) => {
+                setNameIf(child.val().name)
+              })
+              return () => {
+                return false;
+            }
+            },[])
           
             const[chooseData,setChooseData] = useState('Loại dung dịch...');
             const[ModeVisible, setModeVisible] = useState(false);

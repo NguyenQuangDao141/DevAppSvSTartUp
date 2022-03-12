@@ -55,10 +55,11 @@ const DashBoard = ({navigation}) => {
         useEffect(() => {
             const interval = setTimeout(() => {
                 setShowColor(!showColor);
-                return () => {
-                    clearInterval(interval)
-                }
+                
             }, 400);
+            return () => {
+                clearInterval(interval)
+            }
         })
         let timer ;
         if (props.data.time == undefined) { }
@@ -81,18 +82,7 @@ const DashBoard = ({navigation}) => {
                         //setShow(true); 
                         //console.log(`data :${props.data.id}`)
                         navigation.navigate('Infor',{
-                            name:props.data.name ,
-                            bedID :props.data.bedId,
-                            IDUser:props.data.IDUser,
-                            velo  :props.data.velo,
-                            calibVelo:props.data.calibVelo,
-                            isCalib: props.data.isCalib, 
-                            time :props.data.time,
-                            volu: props.data.volu,
                             dataId:props.data.id,
-                            
-                            
-                            
                             })
                      }}
                     style={props.data.velo > 200 ? (showColor) ? styles.warningDrop : styles.warningDropNo : styles.warningDropNo}>
