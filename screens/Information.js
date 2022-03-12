@@ -49,7 +49,6 @@ const Information = ({navigation, route})=>{
   const [voluIf,setVoluIf]     = useState();
   const [time,setTime]     = useState();
   const [velo,setVelo]     = useState();
-  const [volu,setVolu]     = useState();
   const [calibVelo,setCalibVelo]     = useState();
   const [dataId,setDataId]     = useState();
             const onPressDone =() =>{
@@ -62,12 +61,12 @@ const Information = ({navigation, route})=>{
               navigation.navigate('Dash')
             }
             const onPressSetting =() => {
-              // rootRef.child(`${dataId}`).get().then((snapshot)=>{
-              //   rootRef.child(`${dataId}`).update({
-              //     calibVelo: snapshot.val().velo,
-              //     isCalib: true,
-              //   })
-              // });
+              rootRef.get().then((snapshot)=>{
+                rootRef.update({
+                  calibVelo: snapshot.val().velo,
+                  isCalib: true,
+                })
+              });
              
                 Alert.alert('Thông báo','Đã thiết lập vận tốc chảy',[
                   {text:'OK',}
@@ -75,13 +74,20 @@ const Information = ({navigation, route})=>{
             }
             useEffect(()=>{
               rootRef.get().then((snapshot)=>{
-                setNameIf(snapshot.val().name)
+              //  setNameIf(snapshot.val().name)
                 
               }).catch((e)=>{
                 console.log(e);
               })
               animalRef.on('value', (child) => {
+                setIDUserIf(child.val().IDUser)
                 setNameIf(child.val().name)
+                setBedIDIf(child.val().bedId)
+                setVoluIf(child.val().volu)
+                setVelo(child.val().velo)
+                setTime(child.val().time)
+                setCalibVelo(child.val().calibVelo)
+                
               })
               return () => {
                 return false;
@@ -296,7 +302,7 @@ const Information = ({navigation, route})=>{
             onPress={onPressSetting}
             >
             <Text style={{fontSize:16,fontWeight:'bold',color:'white'}}>
-              Hieu chuan
+              Hiệu Chuẩn 
             </Text>
           </TouchableOpacity>
         </View>

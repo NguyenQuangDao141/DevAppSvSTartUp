@@ -36,7 +36,7 @@ function DashStack (){
 }
 
 const App = () => {
-  const [user, setUser] = useState('ok')
+  const [user, setUser] = useState('')
   return (
     <AuthContext.Provider value={{ user, setUser }}>
     <NavigationContainer>
