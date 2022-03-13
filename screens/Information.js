@@ -51,9 +51,14 @@ const Information = ({navigation, route})=>{
   const [velo,setVelo]     = useState();
   const [calibVelo,setCalibVelo]     = useState();
   const [dataId,setDataId]     = useState();
+  
             const onPressDone =() =>{
               rootRef.update({
                  name: nameIf,
+                 IDUser: IDUserIf,
+                 bedId:bedIDIf,
+                 volu:voluIf,
+                 solution:chooseData,
               }).catch((e)=>{
                 console.log(e);
               })
@@ -80,10 +85,19 @@ const Information = ({navigation, route})=>{
                 console.log(e);
               })
               animalRef.on('value', (child) => {
-                setIDUserIf(child.val().IDUser)
-                setNameIf(child.val().name)
-                setBedIDIf(child.val().bedId)
-                setVoluIf(child.val().volu)
+                if(IDUserIf != child.val().IDUser){
+                  setIDUserIf(child.val().IDUser)
+                }
+                if(nameIf != child.val().name){
+                  setNameIf(child.val().name)
+                }
+                if(bedIDIf != child.val().bedId){
+                  setBedIDIf(child.val().bedId)
+                }
+                if(voluIf != child.val().volu){
+                  setVoluIf(child.val().volu)
+                }
+               
                 setVelo(child.val().velo)
                 setTime(child.val().time)
                 setCalibVelo(child.val().calibVelo)
@@ -94,7 +108,7 @@ const Information = ({navigation, route})=>{
             }
             },[])
           
-            const[chooseData,setChooseData] = useState('Loại dung dịch...');
+            const[chooseData,setChooseData] = useState(route.params.solutionIf);
             const[ModeVisible, setModeVisible] = useState(false);
             const changeModeVisible = (bool) =>{
                   setModeVisible(bool)
@@ -136,7 +150,7 @@ const Information = ({navigation, route})=>{
           <Icon
             name={"id-card"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
@@ -156,7 +170,7 @@ const Information = ({navigation, route})=>{
           <Icon
             name={"hospital-user"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
@@ -175,7 +189,7 @@ const Information = ({navigation, route})=>{
           <Icon
             name={"bed"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
@@ -201,7 +215,7 @@ const Information = ({navigation, route})=>{
           <Icon
             name={"prescription-bottle"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
@@ -210,7 +224,7 @@ const Information = ({navigation, route})=>{
           <View style={{height:50,width:'70%',alignItems:'center',justifyContent:'center'}}>
               <TouchableOpacity
                 onPress={() => changeModeVisible(true)}
-                style ={{width:"80%",height:40,backgroundColor:'#0AC4BA',borderWidth:1,borderColor:'grey',borderRadius:5,}}
+                style ={{width:"80%",height:40,backgroundColor:'#2BDA8E',borderWidth:1,borderColor:'grey',borderRadius:5,}}
                 >
                   <Text style={styles.textSolut}>{chooseData}</Text>
               </TouchableOpacity>
@@ -231,15 +245,15 @@ const Information = ({navigation, route})=>{
             <Icon
               name={"prescription-bottle-alt"}
               size ={35}
-              color = {'#0AC4BA'}
+              color = {'#2BDA8E'}
               />
         </View>
        </View>
 
        <View style={{flexDirection:'row-reverse'}} > 
         <View style={{height:50,width:'70%',alignItems:'center',justifyContent:'center'}}>
-          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#0AC4BA',}}>
-            <Text style={{color:'red',fontSize:16,fontWeight:'bold'}}>
+          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#2BDA8E',}}>
+            <Text style={{color:'#D01C1C',fontSize:16,fontWeight:'bold'}}>
             {time}  (phút)
             </Text>
           </View>
@@ -248,15 +262,15 @@ const Information = ({navigation, route})=>{
           <Icon2
             name={"time"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
 
        <View style={{flexDirection:'row-reverse'}} > 
         <View style={{height:50,width:'70%',alignItems:'center',justifyContent:'center'}}>
-          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#0AC4BA',}}>
-            <Text style={{color:'red',fontSize:16,fontWeight:'bold'}}>
+          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#2BDA8E',}}>
+            <Text style={{color:'#D01C1C',fontSize:16,fontWeight:'bold'}}>
             {velo}  (giọt/phút)
             </Text>
           </View>
@@ -265,15 +279,15 @@ const Information = ({navigation, route})=>{
           <Icon2
             name={"speedometer"}
             size ={35}
-            color = {'#0AC4BA'}
+            color = {'#2BDA8E'}
             />
         </View>
       </View >
 
       <View style={{flexDirection:'row-reverse'}} > 
         <View style={{height:50,width:'70%',alignItems:'center',justifyContent:'center'}}>
-          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#0AC4BA',}}>
-            <Text style={{color:'red',fontSize:16,fontWeight:'bold'}}>
+          <View style ={{width:"80%",height:40,borderWidth:1,borderColor:'grey',borderRadius:5,alignItems:'center',justifyContent:'center',backgroundColor:'#2BDA8E',}}>
+            <Text style={{color:'#D01C1C',fontSize:16,fontWeight:'bold'}}>
             {calibVelo}  (giọt/phút)
             </Text>
           </View>
@@ -283,12 +297,12 @@ const Information = ({navigation, route})=>{
             <Icon2
               name={"speedometer"}
               size ={35}
-              color = {'#0AC4BA'}
+              color = {'#2BDA8E'}
               />
               <Icon2
               name={"settings"}
               size ={15}
-              color = {'#0AC4BA'}
+              color = {'#2BDA8E'}
               />
           </View>
         </View>
@@ -329,12 +343,12 @@ const styles = StyleSheet.create({
   header : {
     height: HEIGHT/15,  //HEIGHT = 720
     justifyContent: 'center',
-    backgroundColor: '#0AC4BA',
+    backgroundColor: '#2BDA8E',
   },
   header2 : {
     height: HEIGHT/15,  //HEIGHT = 720
     justifyContent: 'center',
-    backgroundColor: '#0AC4BA',
+    backgroundColor: '#2BDA8E',
     marginTop : 5,
   },
   textHeader:{
@@ -401,7 +415,7 @@ const styles = StyleSheet.create({
       marginTop : 10,
       justifyContent : 'center',
       textAlign : 'center',
-      color: 'red',
+      color: '#D01C1C',
   },
   textInput : {
       fontWeight :'bold',

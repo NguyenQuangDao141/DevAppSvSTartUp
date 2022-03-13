@@ -83,18 +83,20 @@ const DashBoard = ({navigation}) => {
                         //console.log(`data :${props.data.id}`)
                         navigation.navigate('Infor',{
                             dataId:props.data.id,
+                            solutionIf:props.data.solution,
+
                             })
                      }}
                     style={props.data.velo > 200 ? (showColor) ? styles.warningDrop : styles.warningDropNo : styles.warningDropNo}>
                     <View style={props.data.stt&&props.data.stt1 ?  styles.title : styles.titleWarning}>
                         <View >
                             <Text style={styles.header}>ID</Text>
-                            <Text style={{color:'red'}}>{props.data.IDUser}</Text>
+                            <Text style={{color:'#D01C1C'}}>{props.data.IDUser}</Text>
                         </View>
                         <View style={styles.datas}>
                             <View style={styles.data}>
                                 <Text style={styles.header}>Tốc độ</Text>
-                                <Text style={{color:'red'}}>{props.data.velo}</Text>
+                                <Text style={{color:'#D01C1C'}}>{props.data.velo}</Text>
                             </View>
                             <View style={styles.data}>
                                 <Text style={styles.header}>Trạng thái</Text>
@@ -327,7 +329,7 @@ const styles = StyleSheet.create({
       //  alignItems: 'center',
         paddingLeft: 15,
         borderRadius: 10,
-        backgroundColor: '#0AC4BA',
+        backgroundColor: '#2BDA8E',
 
     },
     titleWarning: {
@@ -360,7 +362,7 @@ const styles = StyleSheet.create({
         
     },
     warningTime: {
-        color: 'red',
+        color: '#D01C1C',
         fontSize: 18
     },
     warningTimeNo: {
